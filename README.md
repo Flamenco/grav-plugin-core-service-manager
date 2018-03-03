@@ -32,7 +32,8 @@ override_admin_twigs: true
 ```
 
 ## Usage
-This plugin provides services intended to be used by other plugins.  Disable it only if no other enabled plugins require it.  See the [official documentation](https://www.twelvetone.tv/docs/developer-tools/grav-plugins/core-service-manager) for usage details. 
+This plugin provides services intended to be used by other plugins.  Disable it only if no other enabled plugins require it.  See the [official documentation](https://www.twelvetone.tv/docs/developer-tools/grav-plugins/grav-core-service-manager) for usage details. 
 
 ## To Do
-[ ] Reference counts
+[ ] Service reference counts
+[ ] Require scope to be a property
