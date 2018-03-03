@@ -30,7 +30,7 @@ use Grav\Common\Grav;
     $manager = \Twelvetone\Common\ServiceManager::getInstance();
     $manager->registerService('report', [
         'caption' => "Plugin Dependency Report",
-        'scope' => 'admin',
+        'scope' => ['admin'],
         'icon' => "fa-plug",
         'generate' => function () {
             $tree = [];
