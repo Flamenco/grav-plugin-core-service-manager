@@ -50,6 +50,7 @@ class ServiceTwigExtensions extends \Twig_Extension
             new \Twig_SimpleFunction('service_render', [$this, 'service_render', 0]),
             new \Twig_SimpleFunction('service_items', [$this, 'service_items', 0]),
             new \Twig_SimpleFunction('service_list', [$this, 'service_list', 0]),
+            new \Twig_SimpleFunction('service_list_filter', [$this, 'service_list_filter', 0]),
         ];
     }
 
@@ -196,6 +197,29 @@ class ServiceTwigExtensions extends \Twig_Extension
                 $ret[] = $service;
             }
         }
+        return $ret;
+    }
+
+    /**
+     * @param string $ldapFilter A LDAP filter
+     * @param null $context A context used when filtering the items.
+     * @return array The services matching the given parameters.
+     * @throws \Exception
+     */
+    function service_list_filter($ldapFilter, $context = null)
+    {
+        $ret = [];
+        $manager = ServiceManager::getInstance();
+        $services = $manager->findServices(null, $ldapFilter);
+        foreach ($services as $service) {
+            $ret[] = $service;
+        }
+        //TODO
+        $ret = array_filter($ret, function ($a) use($context) {
+            return
+                ServiceManager::getInstance()->isVisible($a, $context) &&
+                ServiceManager::getInstance()->isEnabled($a, $context);
+        });
         return $ret;
     }
 
