@@ -74,6 +74,9 @@ class ServiceManager
 
         $properties['_SERVICE_ID'] = $serviceId;
         $properties['objectClass'] = $name;
+        if (is_array($theService) && isset($theService['scope'])) {
+            $properties['scope'] =& $theService['scope'];
+        }
 
         $serviceInfo = new ServiceInfo([
             'service' => $name,
