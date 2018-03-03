@@ -239,7 +239,7 @@ class ServiceManager
     /**
      * @param mixed $service
      * @param mixed $context
-     * @return bool false if service has an isEnabled() function that returns falsy.  True otherwise.
+     * @return bool false if service has an isVisible() function that returns falsy.  True otherwise.
      */
     public function isVisible(&$service, $context = null)
     {
