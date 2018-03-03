@@ -107,6 +107,18 @@
         border-left: 9px solid #007ab8;
     }
 
+    /* Override parent rule if under the dropdown div */
+    #admin-menu li.selected .dropdown-menu li a {
+        /*background: #323640;*/
+        /*color: #fff;*/
+        border-left: initial;
+    }
+    #admin-menu li.selected .dropdown-menu li.selected a {
+        /*background: #323640;*/
+        /*color: #fff;*/
+        border-left: 9px solid #007ab8;
+    }
+
     /* TODO not sure what this was set to */
     .ga-theme-16x #admin-menu li.selected div {
         background: #323640;
