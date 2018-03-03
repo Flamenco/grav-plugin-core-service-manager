@@ -44,7 +44,7 @@
         {#tt end#}
 
         {#tt#}
-        {% set pageadd_items = service_list("admin:menu:page_add", "dashboard", "any", context) %}
+        {% set pageadd_items = service_list_filter("(&(objectClass=action)(menu=page:add)(scope=dashboard))", context) %}
         {% if pageadd_items|count > 0 %}
         <div class="button-group">
             {#<button type="button" class="button disabled" href="#modal" data-remodal-target="modal">#}
@@ -122,7 +122,7 @@
     {%- endif -%}
 
     {#tt#}
-    {% for item in service_list("admin:menu:page_add",  "dashboard", "any", context) %}
+    {% for item in service_list_filter("(&(objectClass=action)(menu=page:add)(scope=dashboard))", context) %}
         {% if item.form_id %}
             {% set form_data = item.form_data(context) %}
             <div class="remodal" data-remodal-id="{{ item.form_id }}" data-remodal-options="hashTracking: false">

@@ -224,7 +224,7 @@
                         {% endif %}
                     {% endfor %}
                     {#tt#}
-                    {% for item in service_list("admin:menu:page_add", "pages", "any", context) %}
+                    {% for item in service_list_filter("(&(objectClass=action)(menu=page:add)(scope=pages))", context) %}
                         {% set key = item.form_id ? "href=##{item.form_id} data-remodal-target=#{item.form_id}" : "" %}
                         <li><a class="button" {{ key }}>{{ item.caption }}</a></li>
                     {% endfor %}
@@ -307,7 +307,7 @@
                             <li><a class="button" href="#modular" data-remodal-target="modular">{{ "PLUGIN_ADMIN.ADD_MODULAR"|tu }}</a></li>
                         {% endif %}
                         {#tt#}
-                        {% for item in service_list("admin:menu:page_add", "page", "any", context) %}
+                        {% for item in service_list_filter("(&(objectClass=action)(menu=page:add)(scope=page))", context) %}
                             {% set key = item.form_id ? "href=##{item.form_id} data-remodal-target=#{item.form_id}" : "" %}
                             <li><a class="button" {{ key }}>{{ item.caption }}</a></li>
                         {% endfor %}
@@ -489,7 +489,7 @@
     {% endfor %}
         
     {#tt#}
-    {% for item in service_list("admin:menu:page_add", mode == 'list' ? "pages" : "page", "any", context) %}
+    {% for item in service_list_filter("(&(objectClass=action)(menu=page:add)(scope=#{ mode=='list' ? 'pages' : 'page' }))", context) %}
         {% if item.form_id %}
             {% set form_data = item.form_data(context) %}
             <div class="remodal" data-remodal-id="{{ item.form_id }}" data-remodal-options="hashTracking: false">
