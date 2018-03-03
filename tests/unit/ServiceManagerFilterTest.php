@@ -96,10 +96,10 @@ class ServiceManagerFilterTest extends \Codeception\Test\Unit
     public function testServiceManagerFilterBoolean()
     {
         $manager = new ServiceManager();
-        
+
         $manager->registerService('is-int', 12, ['isEven' => true]);
         $manager->registerService('is-int', 13, ['isEven' => false]);
-        
+
         $service = $manager->findService('is-int', '(isEven=TRUE)');
         $this->assertSame(12, $service);
 
@@ -119,10 +119,32 @@ class ServiceManagerFilterTest extends \Codeception\Test\Unit
 
         $services = $manager->findServices(null, '(objectClass=is-int)');
         $this->assertSame(2, count($services));
-        
+
         $services = $manager->findServices(null, '(&(objectClass=is-int)(isEven=FALSE))');
         $this->assertSame(1, count($services));
         $this->assertSame(13, $services[0]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testServiceManagerFilterList()
+    {
+        $manager = new ServiceManager();
+
+        $manager->registerService('is-int', 12, ['groups' => ['a', 'b', 'c']]);
+
+        $services = $manager->findServices(null, '(&(objectClass=is-int)(groups=a))');
+        $this->assertSame(1, count($services));
+
+        $services = $manager->findServices(null, '(&(objectClass=is-int)(groups=a)(groups=b))');
+        $this->assertSame(1, count($services));
+
+        $services = $manager->findServices(null, '(&(objectClass=is-int)(groups=d))');
+        $this->assertSame(0, count($services));
+        
+        $services = $manager->findServices(null, '(&(objectClass=is-int)(groups=a)(groups=d))');
+        $this->assertSame(0, count($services));
     }
 
 }
