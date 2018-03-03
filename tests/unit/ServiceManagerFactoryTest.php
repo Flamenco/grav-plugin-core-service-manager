@@ -42,6 +42,9 @@ class ServiceManagerFactoryTest extends \Codeception\Test\Unit
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function testFactoryService()
     {
         $manager = new ServiceManager();
@@ -55,6 +58,9 @@ class ServiceManagerFactoryTest extends \Codeception\Test\Unit
         $this->assertEquals("theValue", $service['value']);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testFactoryServiceInfo()
     {
         $manager = new ServiceManager();
@@ -65,7 +71,7 @@ class ServiceManagerFactoryTest extends \Codeception\Test\Unit
 
         $serviceInfo = $manager->findServiceInfo('has-caption');
         $this->assertFalse($serviceInfo->isInstantiated);
-        
+
         $serviceInfo->implementation;
         $this->assertTrue($serviceInfo->isInstantiated);
 
