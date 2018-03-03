@@ -5,11 +5,11 @@ icon: plug
 author:
   name: TwelveTone LLC
   email: info@twelvetone.tv
-homepage: https://www.twelvetone.tv/docs/developer-tools/grav-plugins/core-service-manager
+homepage: https://www.twelvetone.tv/docs/developer-tools/grav-plugins/grav-core-service-manager
 xdemo: http://demo.yoursite.com
 keywords: grav, plugin, core, service, manager, osgi, twig, ajax
-bugs: https://github.com/twelve-tone-llc/grav-plugin-core-service-manager/issues
-docs: https://www.twelvetone.tv/docs/developer-tools/grav-plugins/core-service-manager
+bugs: https://github.com/flamenco/grav-plugin-core-service-manager/issues
+docs: https://www.twelvetone.tv/docs/developer-tools/grav-plugins/grav-core-service-manager
 license: MIT
 
 dependencies:
