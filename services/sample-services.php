@@ -105,9 +105,11 @@ if (\Grav\Common\Grav::instance()['config']->get("plugins.core-service-manager.s
 // Menu items in the +Add page dropdown
 //
 
-    $manager->registerService("admin:menu:page_add", [
+    $manager->registerService("action", [
         'caption' => 'Sample Page',
         'scope' => ['page', 'pages'],
         'order' => 'last',
+    ], [
+        'menu' => 'page:add'
     ]);
 }
