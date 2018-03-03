@@ -272,6 +272,7 @@ class ServiceManager
      * @param string $serviceName The service name.
      * @param string $ldapFilter
      * @return array|null
+     * @throws \Exception
      */
     public function findService($serviceName, $ldapFilter = null)
     {
@@ -286,6 +287,7 @@ class ServiceManager
      * @param string $serviceName The service name
      * @param string $ldapFilter
      * @return ServiceInfo|null
+     * @throws \Exception
      */
     public function findServiceInfo($serviceName, $ldapFilter = null)
     {
@@ -310,8 +312,7 @@ class ServiceManager
 
         $filter = \Net_LDAP2_Filter::parse($ldapFilter);
         if (\PEAR::isError($filter)) {
-            return null;
-            //throw new \Exception($filter);
+            throw new \Exception($filter);
         }
         foreach ($this->serviceInfoMap as $serviceInfo) {
             if ($filter->matches($serviceInfo->entries) > 0) {
