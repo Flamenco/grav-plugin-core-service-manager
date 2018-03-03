@@ -60,7 +60,7 @@ class ServiceManager
 
     /**
      * @param $name string The service name
-     * @param $theService array|object|callable The service as an array, object, or factory
+     * @param $theService mixed The service as an array, object, boolean, string, number, or factory closure
      * @param $properties array Properties to associate with the object
      * @return int The serviceId
      */
