@@ -73,7 +73,7 @@ class ServiceManager
         }
 
         $properties['_SERVICE_ID'] = $serviceId;
-        $properties['_SERVICE'] = $name;
+        $properties['objectClass'] = $name;
 
         $serviceInfo = new ServiceInfo([
             'service' => $name,
