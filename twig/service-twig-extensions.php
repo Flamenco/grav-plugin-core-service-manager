@@ -71,7 +71,7 @@ class ServiceTwigExtensions extends \Twig_Extension
         }
 
         try {
-            $services = ServiceManager::getInstance()->findServices(null, '(&(objectClass=$serviceName)(!(menu=*))');
+            $services = ServiceManager::getInstance()->findServices(null, "(&(objectClass=$serviceName)(!(menu=*)))");
         } catch (\Exception $e) {
             // Should only happen if filter is invalid
             return '';
