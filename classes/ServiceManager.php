@@ -214,32 +214,34 @@ class ServiceManager
     }
 
     /**
-     * @param $service
+     * @param mixed $service
+     * @param mixed $context
      * @return bool false if service has an isEnabled() function that returns falsy.  True otherwise.
      */
-    public function isEnabled(&$service)
+    public function isEnabled(&$service, $context = null)
     {
         if (!isset($service['isEnabled'])) {
             return true;
         }
         if (is_callable($service['isEnabled'])) {
-            return $service['isEnabled']();
+            return $service['isEnabled']($context);
         } else {
             return (boolean)$service['isEnabled'];
         }
     }
 
     /**
-     * @param $service
+     * @param mixed $service
+     * @param mixed $context
      * @return bool false if service has an isEnabled() function that returns falsy.  True otherwise.
      */
-    public function isVisible(&$service)
+    public function isVisible(&$service, $context = null)
     {
         if (!isset($service['isVisible'])) {
             return true;
         }
         if (is_callable($service['isVisible'])) {
-            return $service['isVisible']();
+            return $service['isVisible']($context);
         } else {
             return (boolean)$service['isVisible'];
         }
@@ -299,7 +301,7 @@ class ServiceManager
             if (!isset($this->serviceMap[$serviceName])) {
                 return null;
             }
-            
+
             if ($ldapFilter == null) {
                 $items = &$this->serviceMap[$serviceName];
                 $serviceInfo = reset($items);
@@ -351,7 +353,7 @@ class ServiceManager
             throw new \Exception($filter);
         }
 
-        // TODO we can optimize search if name was provided
+        // TODO we can optimize search if serviceName was provided or objectClass is in the filter
         foreach ($this->serviceInfoMap as $serviceInfo) {
             if ($filter->matches($serviceInfo->entries) > 0) {
                 $found[] = $serviceInfo->implementation;
