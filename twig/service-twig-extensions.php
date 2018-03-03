@@ -43,7 +43,7 @@ class ServiceTwigExtensions extends \Twig_Extension
     {
         return self::quoteEscape(self::encode($value));
     }
-    
+
     public function getFunctions()
     {
         return [
@@ -54,9 +54,9 @@ class ServiceTwigExtensions extends \Twig_Extension
     }
 
     /**
-     * 
+     *
      * Renders "renderer" and "action" services
-     * 
+     *
      * @param string $serviceName The service name.
      * @param string $scope The scope to filter.  null or 'any' to match all scopes.
      * @param string $order The order.  null or 'any' to match all items.
@@ -74,6 +74,11 @@ class ServiceTwigExtensions extends \Twig_Extension
         foreach ($services as $service) {
             if (isset($service['isEnabled'])) {
                 if (!$service['isEnabled']($context)) {
+                    continue;
+                }
+            }
+            if (isset($service['isVisible'])) {
+                if (!$service['isVisible']($context)) {
                     continue;
                 }
             }
@@ -120,8 +125,8 @@ class ServiceTwigExtensions extends \Twig_Extension
                             // The admin sidebar CSS only hides caption if it is inside an <em> tag.
                             // The admin sidebar needs the href set.
                             $class = '';
-                            if (isset($service['isSelected'])){
-                                if ($service['isSelected']($context)){
+                            if (isset($service['isSelected'])) {
+                                if ($service['isSelected']($context)) {
                                     $class = 'selected';
                                 }
                             }
