@@ -220,6 +220,9 @@ class ServiceManager
      */
     public function isEnabled(&$service, $context = null)
     {
+        if (!is_array($service)) {
+            return true;
+        }
         if (!isset($service['isEnabled'])) {
             return true;
         }
@@ -237,6 +240,9 @@ class ServiceManager
      */
     public function isVisible(&$service, $context = null)
     {
+        if (!is_array($service)) {
+            return true;
+        }
         if (!isset($service['isVisible'])) {
             return true;
         }
