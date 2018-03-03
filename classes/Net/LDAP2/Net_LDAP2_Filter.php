@@ -433,6 +433,13 @@ class Net_LDAP2_Filter extends PEAR
                         // $value_arr         = Net_LDAP2_Util::escape_filter_value(array($filter_parts[2]));
                         // $value             = $value_arr[0];
                         $value             = $filter_parts[2];
+                        //tt
+                        if ($value === 'TRUE') {
+                            $value = true;
+                        } else if ($value === 'FALSE') {
+                            $value = false;
+                        }
+                        //tt end
                         $filter_o->_filter = '('.$filter_parts[0].$filter_parts[1].$value.')';
                         return $filter_o;
                     }
