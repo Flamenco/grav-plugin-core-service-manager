@@ -69,7 +69,12 @@ class ServiceTwigExtensions extends \Twig_Extension
             $scope = (array)$scope;
         }
 
-        $services = ServiceManager::getInstance()->getServices($serviceName);
+        try {
+            $services = ServiceManager::getInstance()->findServices(null, '(&(objectClass=$serviceName)(!(menu=*))');
+        } catch (\Exception $e) {
+            // Should only happen if filter is invalid
+            return '';
+        }
         $out = '';
         foreach ($services as $service) {
             if (isset($service['isEnabled'])) {
