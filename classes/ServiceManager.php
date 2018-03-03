@@ -289,16 +289,23 @@ class ServiceManager
      */
     public function findServiceInfo($serviceName, $ldapFilter = null)
     {
-        if (!isset($this->serviceMap[$serviceName])) {
-            return null;
+        if ($serviceName == null && $ldapFilter == null) {
+            throw new \Exception("No filter specified");
         }
-        if ($ldapFilter == null) {
-            $items = &$this->serviceMap[$serviceName];
-            $serviceInfo = reset($items);
-            if (!$serviceInfo) {
+
+        if ($serviceName != null) {
+            if (!isset($this->serviceMap[$serviceName])) {
                 return null;
             }
-            return $serviceInfo;
+            
+            if ($ldapFilter == null) {
+                $items = &$this->serviceMap[$serviceName];
+                $serviceInfo = reset($items);
+                if (!$serviceInfo) {
+                    return null;
+                }
+                return $serviceInfo;
+            }
         }
 
         $filter = \Net_LDAP2_Filter::parse($ldapFilter);
@@ -315,19 +322,25 @@ class ServiceManager
     }
 
     /**
-     * @param string $name The service name
+     * @param string $serviceName The service name
      * @param string $ldapFilter
      * @return array|null
      * @throws \Exception
      */
-    public function findServices($name, $ldapFilter = null)
+    public function findServices($serviceName, $ldapFilter = null)
     {
-        if (!isset($this->serviceMap[$name])) {
-            return [];
+        if ($serviceName == null && $ldapFilter == null) {
+            throw new \Exception("No filter specified");
         }
-        if ($ldapFilter == null) {
-            $items = $this->serviceMap[$name];
-            return $items;
+
+        if ($serviceName != null) {
+            if (!isset($this->serviceMap[$serviceName])) {
+                return [];
+            }
+            if ($ldapFilter == null) {
+                $items = $this->serviceMap[$serviceName];
+                return $items;
+            }
         }
 
         $found = [];
@@ -336,6 +349,8 @@ class ServiceManager
         if (\PEAR::isError($filter)) {
             throw new \Exception($filter);
         }
+
+        // TODO we can optimize search if name was provided
         foreach ($this->serviceInfoMap as $serviceInfo) {
             if ($filter->matches($serviceInfo->entries) > 0) {
                 $found[] = $serviceInfo->implementation;
