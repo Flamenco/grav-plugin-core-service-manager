@@ -1,3 +1,9 @@
+# v1.0.3
+##  03/03/2018
+
+1. [](#new)
+    * Update pages.twig to use correct scope
+
 # v1.0.2
 ##  03/03/2018
 
