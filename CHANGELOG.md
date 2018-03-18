@@ -1,3 +1,9 @@
+# v1.0.4
+##  03/18/2018
+
+1. [](#bugfix)
+    * Fix mixing call to startsWith() 
+    
 # v1.0.3
 ##  03/03/2018
 
