@@ -26,6 +26,7 @@
 namespace Grav\Plugin;
 
 use Grav\Common\Plugin;
+use Grav\Common\Utils;
 use Twelvetone\Common\ServiceManager;
 
 require_once "classes/ServiceManager.php";
@@ -144,7 +145,7 @@ class CoreServiceManagerPlugin extends Plugin
     public function onAdminTaskExecute($e)
     {
         $method = $e['method'];
-        if (!\Grav\Common\Utils::startsWith("task", $method)) {
+        if (!Utils::startsWith("task", $method)) {
             return false;
 
         }
