@@ -144,7 +144,7 @@ class CoreServiceManagerPlugin extends Plugin
     public function onAdminTaskExecute($e)
     {
         $method = $e['method'];
-        if (!startsWith("task", $method)) {
+        if (!\Grav\Common\Utils::startsWith("task", $method)) {
             return false;
 
         }
