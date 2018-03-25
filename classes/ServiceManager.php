@@ -209,10 +209,15 @@ class ServiceManager
 
     public function onNonAjaxAction($actionId, $context)
     {
+        //TODO log if service is not found, or handler is not installed
         $found = $this->findServiceForAction($actionId);
         if ($found) {
             $value = json_decode($context, true);
-            $found['serverCallback']($value);
+            if (isset($found['serverHandler'])) {
+                $found['serverHandler']($value);
+            } else {
+                $found['serverCallback']($value);
+            }
         }
     }
 
