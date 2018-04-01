@@ -48,10 +48,54 @@ class ServiceTwigExtensions extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('service_render', [$this, 'service_render', 0]),
+            new \Twig_SimpleFunction('service_render_count', [$this, 'service_render_count', 0]),
             new \Twig_SimpleFunction('service_items', [$this, 'service_items', 0]),
             new \Twig_SimpleFunction('service_list', [$this, 'service_list', 0]),
             new \Twig_SimpleFunction('service_list_filter', [$this, 'service_list_filter', 0]),
         ];
+    }
+
+    /**
+     *
+     * Returns the number of services that will render
+     *
+     * @param string $serviceName The service name.
+     * @param string $scope The scope to filter.  null or 'any' to match all scopes.
+     * @param string $order The order.  null or 'any' to match all items.
+     * @param null $context
+     * @return number
+     */
+    public function service_render_count($serviceName, $scope = null, $order = null, $context = null)
+    {
+        $ret = 0;
+        if ($scope) {
+            $scope = (array)$scope;
+        }
+
+        try {
+            $services = ServiceManager::getInstance()->findServices(null, "(&(objectClass=$serviceName)(!(menu=*)))");
+        } catch (\Exception $e) {
+            // Should only happen if filter is invalid
+            return 0;
+        }
+        foreach ($services as $service) {
+            if (isset($service['isEnabled'])) {
+                if (!$service['isEnabled']($context)) {
+                    continue;
+                }
+            }
+            if (isset($service['isVisible'])) {
+                if (!$service['isVisible']($context)) {
+                    continue;
+                }
+            }
+            if (!$scope || !empty(array_intersect($scope, $service['scope']))) {
+                if ($order == null || $order == 'any' || $order === $service['order']) {
+                    $ret++;
+                }
+            }
+        }
+        return $ret;
     }
 
     /**
