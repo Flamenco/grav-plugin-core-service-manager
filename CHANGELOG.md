@@ -1,14 +1,20 @@
+# v1.0.6
+##  04/01/2018
+
+1. [](#bugfix)
+    * Hide the 'more menu' if no menu items exist 
+
 # v1.0.5
 ##  03/25/2018
 
-1. [](#feature)
+1. [](#new)
     * Add serverHandler support to action service 
     
 # v1.0.4
 ##  03/18/2018
 
 1. [](#bugfix)
-    * Fix mixing call to startsWith() 
+    * Fix missing function startsWith() 
     
 # v1.0.3
 ##  03/03/2018
