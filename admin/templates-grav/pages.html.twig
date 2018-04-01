@@ -318,17 +318,19 @@
                 </div>
 
                 {#tt#}
-                <div class="button-group">
-                    <button type="button" class="button disabled" href="#">
-                    <i class="fa fa-plus-square"></i> {{ "More" }}
-                    </button>
-                    <button type="button" class="button dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        {{ service_render('action', 'page:more', 'any', context) | raw }}
-                    </ul>
-                </div>
+                {% if service_render_count('action', 'page:more', 'any', context) > 0 %}
+                    <div class="button-group">
+                        <button type="button" class="button disabled" href="#">
+                            <i class="fa fa-plus-square"></i> {{ "More" }}
+                        </button>
+                        <button type="button" class="button dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            {{ service_render('action', 'page:more', 'any', context) | raw }}
+                        </ul>
+                    </div>
+                {% endif %}
                 {#tt end#}
 
                 <a class="button disable-after-click" href="{{ uri.addNonce(page_url ~ '/task' ~ config.system.param_sep ~ 'copy', 'admin-form', 'admin-nonce') }}" class="page-copy" ><i class="fa fa-copy"></i> {{ "PLUGIN_ADMIN.COPY"|tu }}</a>
