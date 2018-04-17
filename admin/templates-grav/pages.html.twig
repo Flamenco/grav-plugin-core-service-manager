@@ -553,6 +553,10 @@
     $('.admin-pages .form-tabs .tabs-nav').css('margin-right', ($('#admin-topbar').width() + 20) + 'px');
 </script>
 
+{#tt - remove this when the admin plugin is fixed#}
+{{ assets.js('bottom') | raw }}
+{#tt end#}
+    
     {#tt#}
     {% set like_data = grav.session.getFlashObject("like_data") %}
     {% set like_page = grav.session.getFlashObject("like_page") %}
