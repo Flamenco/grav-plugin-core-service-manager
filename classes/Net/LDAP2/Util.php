@@ -17,7 +17,7 @@
 /**
  * Includes
  */
-require_once 'PEAR.php';
+require_once 'MYPEAR.php';
 
 /**
  * Utility Class for Net_LDAP2
@@ -31,7 +31,7 @@ require_once 'PEAR.php';
  * @license  http://www.gnu.org/copyleft/lesser.html LGPL
  * @link     http://pear.php.net/package/Net_LDAP22/
  */
-class Net_LDAP2_Util extends PEAR
+class Net_LDAP2_Util extends MYPEAR
 {
     /**
      * Constructor

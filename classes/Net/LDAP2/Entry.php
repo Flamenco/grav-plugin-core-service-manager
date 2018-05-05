@@ -19,7 +19,7 @@
 /**
  * Includes
  */
-require_once 'PEAR.php';
+require_once 'MYPEAR.php';
 require_once 'Util.php';
 
 /**
@@ -36,7 +36,7 @@ require_once 'Util.php';
  * @license  http://www.gnu.org/copyleft/lesser.html LGPL
  * @link     http://pear.php.net/package/Net_LDAP2/
  */
-class Net_LDAP2_Entry extends PEAR
+class Net_LDAP2_Entry extends MYPEAR
 {
     /**
      * Entry ressource identifier
@@ -206,7 +206,7 @@ class Net_LDAP2_Entry extends PEAR
     public static function createFresh($dn, $attrs = array())
     {
         if (!is_array($attrs)) {
-            return PEAR::raiseError("Unable to create fresh entry: Parameter \$attrs needs to be an array!");
+            return MYPEAR::raiseError("Unable to create fresh entry: Parameter \$attrs needs to be an array!");
         }
 
         $entry = new Net_LDAP2_Entry($attrs, $dn);
@@ -233,10 +233,10 @@ class Net_LDAP2_Entry extends PEAR
     public static function createConnected($ldap, $entry)
     {
         if (!$ldap instanceof Net_LDAP2) {
-            return PEAR::raiseError("Unable to create connected entry: Parameter \$ldap needs to be a Net_LDAP2 object!");
+            return MYPEAR::raiseError("Unable to create connected entry: Parameter \$ldap needs to be a Net_LDAP2 object!");
         }
         if (!is_resource($entry)) {
-            return PEAR::raiseError("Unable to create connected entry: Parameter \$entry needs to be a ldap entry resource!");
+            return MYPEAR::raiseError("Unable to create connected entry: Parameter \$entry needs to be a ldap entry resource!");
         }
 
         $entry = new Net_LDAP2_Entry($ldap, $entry);
@@ -276,7 +276,7 @@ class Net_LDAP2_Entry extends PEAR
     public static function createExisting($dn, $attrs = array())
     {
         if (!is_array($attrs)) {
-            return PEAR::raiseError("Unable to create entry object: Parameter \$attrs needs to be an array!");
+            return MYPEAR::raiseError("Unable to create entry object: Parameter \$attrs needs to be an array!");
         }
 
         $entry = Net_LDAP2_Entry::createFresh($dn, $attrs);
@@ -500,7 +500,7 @@ class Net_LDAP2_Entry extends PEAR
      * Alias function of getValue for perl-ldap interface
      *
      * @see getValue()
-     * @return string|array|PEAR_Error
+     * @return string|array|MYPEAR_Error
      */
     public function get_value()
     {
@@ -556,7 +556,7 @@ class Net_LDAP2_Entry extends PEAR
     public function add($attr = array())
     {
         if (false == is_array($attr)) {
-            return PEAR::raiseError("Parameter must be an array");
+            return MYPEAR::raiseError("Parameter must be an array");
         }
         if ($this->isNew()) {
             $this->setAttributes($attr);
@@ -706,7 +706,7 @@ class Net_LDAP2_Entry extends PEAR
     public function replace($attr = array(), $force = false)
     {
         if (false == is_array($attr)) {
-            return PEAR::raiseError("Parameter must be an array");
+            return MYPEAR::raiseError("Parameter must be an array");
         }
         foreach ($attr as $k => $v) {
             $k = $this->getAttrName($k);
@@ -756,20 +756,20 @@ class Net_LDAP2_Entry extends PEAR
         if ($ldap) {
             $msg = $this->setLDAP($ldap);
             if (Net_LDAP2::isError($msg)) {
-                return PEAR::raiseError('You passed an invalid $ldap variable to update()');
+                return MYPEAR::raiseError('You passed an invalid $ldap variable to update()');
             }
         }
 
         // ensure we have a valid LDAP object
         $ldap = $this->getLDAP();
         if (!$ldap instanceof Net_LDAP2) {
-            return PEAR::raiseError("The entries LDAP object is not valid");
+            return MYPEAR::raiseError("The entries LDAP object is not valid");
         }
 
         // Get and check link
         $link = $ldap->getLink();
         if (!is_resource($link)) {
-            return PEAR::raiseError("Could not update entry: internal LDAP link is invalid");
+            return MYPEAR::raiseError("Could not update entry: internal LDAP link is invalid");
         }
 
         /*
@@ -810,7 +810,7 @@ class Net_LDAP2_Entry extends PEAR
         */
         if (false == is_null($this->_newdn)) {
             if ($ldap->getLDAPVersion() !== 3) {
-                return PEAR::raiseError("Renaming/Moving an entry is only supported in LDAPv3");
+                return MYPEAR::raiseError("Renaming/Moving an entry is only supported in LDAPv3");
             }
             // make dn relative to parent (needed for ldap rename)
             $parent = Net_LDAP2_Util::ldap_explode_dn($this->_newdn, array('casefolding' => 'none', 'reverse' => false, 'onlyvalues' => false));
@@ -828,7 +828,7 @@ class Net_LDAP2_Entry extends PEAR
             // rename/move
             if (false == @ldap_rename($link, $this->_dn, $child, $parent, false)) {
 
-                return PEAR::raiseError("Entry not renamed: " .
+                return MYPEAR::raiseError("Entry not renamed: " .
                     @ldap_error($link), @ldap_errno($link));
             }
             // reflect changes to local copy
@@ -841,7 +841,7 @@ class Net_LDAP2_Entry extends PEAR
         */
         $fullEntry = $ldap->getEntry( $this->dn() );
         if ( Net_LDAP2::isError($fullEntry) ) {
-            return PEAR::raiseError("Could not retrieve a full set of attributes to reconcile changes with");
+            return MYPEAR::raiseError("Could not retrieve a full set of attributes to reconcile changes with");
         }
         $modifications = array();
 
@@ -878,7 +878,7 @@ class Net_LDAP2_Entry extends PEAR
 
         // COMMIT
         if (false === @ldap_modify($link, $this->dn(), $modifications)) {
-            return PEAR::raiseError("Could not modify the entry: " . @ldap_error($link), @ldap_errno($link));
+            return MYPEAR::raiseError("Could not modify the entry: " . @ldap_error($link), @ldap_errno($link));
         }
 
         // all went well, so _original (server) becomes _attributes (local copy), reset _changes too...
@@ -917,7 +917,7 @@ class Net_LDAP2_Entry extends PEAR
     public function getLDAP()
     {
         if (!$this->_ldap instanceof Net_LDAP2) {
-            $err = new PEAR_Error('LDAP is not a valid Net_LDAP2 object');
+            $err = new MYPEAR_Error('LDAP is not a valid Net_LDAP2 object');
             return $err;
         } else {
             return $this->_ldap;
@@ -938,7 +938,7 @@ class Net_LDAP2_Entry extends PEAR
     public function setLDAP($ldap)
     {
         if (!$ldap instanceof Net_LDAP2) {
-            return PEAR::raiseError("LDAP is not a valid Net_LDAP2 object");
+            return MYPEAR::raiseError("LDAP is not a valid Net_LDAP2 object");
         } else {
             $this->_ldap = $ldap;
             return true;

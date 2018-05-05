@@ -327,7 +327,7 @@ class ServiceManager
         }
 
         $filter = \Net_LDAP2_Filter::parse($ldapFilter);
-        if (\PEAR::isError($filter)) {
+        if (\MYPEAR::isError($filter)) {
             throw new \Exception($filter);
         }
         foreach ($this->serviceInfoMap as $serviceInfo) {
@@ -363,7 +363,7 @@ class ServiceManager
         $found = [];
 
         $filter = \Net_LDAP2_Filter::parse($ldapFilter);
-        if (\PEAR::isError($filter)) {
+        if (\MYPEAR::isError($filter)) {
             throw new \Exception($filter);
         }
 

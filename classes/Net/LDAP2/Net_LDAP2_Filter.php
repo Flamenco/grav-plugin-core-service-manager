@@ -17,7 +17,7 @@
 /**
  * Includes
  */
-require_once 'PEAR.php';
+require_once 'MYPEAR.php';
 require_once 'Util.php';
 require_once 'Entry.php';
 
@@ -57,7 +57,7 @@ require_once 'Entry.php';
  * @license  http://www.gnu.org/copyleft/lesser.html LGPL
  * @link     http://pear.php.net/package/Net_LDAP2/
  */
-class Net_LDAP2_Filter extends PEAR
+class Net_LDAP2_Filter extends MYPEAR
 {
     /**
      * Storage for combination of filters
@@ -110,7 +110,7 @@ class Net_LDAP2_Filter extends PEAR
         // The optional parameter must remain here, because otherwise create() crashes
         if (false !== $filter) {
             $filter_o = self::parse($filter);
-            if (PEAR::isError($filter_o)) {
+            if (MYPEAR::isError($filter_o)) {
                 $this->_filter = $filter_o; // assign error, so asString() can report it
             } else {
                 $this->_filter = $filter_o->asString();
@@ -220,7 +220,7 @@ class Net_LDAP2_Filter extends PEAR
                 $leaf_filter->_filter = '(' . $attr_name . '=*)';
                 break;
             default:
-                return PEAR::raiseError('Net_LDAP2_Filter create error: matching rule "' . $match . '" not known!');
+                return MYPEAR::raiseError('Net_LDAP2_Filter create error: matching rule "' . $match . '" not known!');
         }
 
         // negate if requested
@@ -247,7 +247,7 @@ class Net_LDAP2_Filter extends PEAR
      */
     public static function &combine($log_op, $filters)
     {
-        if (PEAR::isError($filters)) {
+        if (MYPEAR::isError($filters)) {
             return $filters;
         }
 
@@ -263,48 +263,48 @@ class Net_LDAP2_Filter extends PEAR
                 $filters = array($filters); // force array
             } elseif (is_string($filters)) {
                 $filter_o = self::parse($filters);
-                if (PEAR::isError($filter_o)) {
-                    $err = PEAR::raiseError('Net_LDAP2_Filter combine error: '.$filter_o->getMessage());
+                if (MYPEAR::isError($filter_o)) {
+                    $err = MYPEAR::raiseError('Net_LDAP2_Filter combine error: '.$filter_o->getMessage());
                     return $err;
                 } else {
                     $filters = array($filter_o);
                 }
             } elseif (is_array($filters)) {
                 if (count($filters) != 1) {
-                    $err = PEAR::raiseError('Net_LDAP2_Filter combine error: operator is "not" but $filter is an array!');
+                    $err = MYPEAR::raiseError('Net_LDAP2_Filter combine error: operator is "not" but $filter is an array!');
                     return $err;
                 } elseif (!($filters[0] instanceof Net_LDAP2_Filter)) {
-                    $err = PEAR::raiseError('Net_LDAP2_Filter combine error: operator is "not" but $filter is not a valid Net_LDAP2_Filter nor a filter string!');
+                    $err = MYPEAR::raiseError('Net_LDAP2_Filter combine error: operator is "not" but $filter is not a valid Net_LDAP2_Filter nor a filter string!');
                     return $err;
                 }
             } else {
-                $err = PEAR::raiseError('Net_LDAP2_Filter combine error: operator is "not" but $filter is not a valid Net_LDAP2_Filter nor a filter string!');
+                $err = MYPEAR::raiseError('Net_LDAP2_Filter combine error: operator is "not" but $filter is not a valid Net_LDAP2_Filter nor a filter string!');
                 return $err;
             }
         } elseif ($log_op == '&' || $log_op == '|') {
             if (!is_array($filters) || count($filters) < 2) {
-                $err = PEAR::raiseError('Net_LDAP2_Filter combine error: parameter $filters is not an array or contains less than two Net_LDAP2_Filter objects!');
+                $err = MYPEAR::raiseError('Net_LDAP2_Filter combine error: parameter $filters is not an array or contains less than two Net_LDAP2_Filter objects!');
                 return $err;
             }
         } else {
-            $err = PEAR::raiseError('Net_LDAP2_Filter combine error: logical operator is not known!');
+            $err = MYPEAR::raiseError('Net_LDAP2_Filter combine error: logical operator is not known!');
             return $err;
         }
 
         $combined_filter = new Net_LDAP2_Filter();
         foreach ($filters as $key => $testfilter) {     // check for errors
-            if (PEAR::isError($testfilter)) {
+            if (MYPEAR::isError($testfilter)) {
                 return $testfilter;
             } elseif (is_string($testfilter)) {
                 // string found, try to parse into an filter object
                 $filter_o = self::parse($testfilter);
-                if (PEAR::isError($filter_o)) {
+                if (MYPEAR::isError($filter_o)) {
                     return $filter_o;
                 } else {
                     $filters[$key] = $filter_o;
                 }
             } elseif (!$testfilter instanceof Net_LDAP2_Filter) {
-                $err = PEAR::raiseError('Net_LDAP2_Filter combine error: invalid object passed in array $filters!');
+                $err = MYPEAR::raiseError('Net_LDAP2_Filter combine error: invalid object passed in array $filters!');
                 return $err;
             }
         }
@@ -336,7 +336,7 @@ class Net_LDAP2_Filter extends PEAR
             $c_openbracks  = preg_match_all('/(?<!\\\\)\(/' , $matches[1], $notrelevant);
             $c_closebracks = preg_match_all('/(?<!\\\\)\)/' , $matches[1], $notrelevant);
             if ($c_openbracks != $c_closebracks) {
-                return PEAR::raiseError("Filter parsing error: invalid filter syntax - opening brackets do not match close brackets!");
+                return MYPEAR::raiseError("Filter parsing error: invalid filter syntax - opening brackets do not match close brackets!");
             }
 
             if (in_array(substr($matches[1], 0, 1), array('!', '|', '&'))) {
@@ -393,18 +393,18 @@ class Net_LDAP2_Filter extends PEAR
                 } elseif (count($subfilters) > 1) {
                     // several subfilters found
                     if ($log_op == "!") {
-                        return PEAR::raiseError("Filter parsing error: invalid filter syntax - NOT operator detected but several arguments given!");
+                        return MYPEAR::raiseError("Filter parsing error: invalid filter syntax - NOT operator detected but several arguments given!");
                     }
                 } else {
                     // this should not happen unless the user specified a wrong filter
-                    return PEAR::raiseError("Filter parsing error: invalid filter syntax - got operator '$log_op' but no argument!");
+                    return MYPEAR::raiseError("Filter parsing error: invalid filter syntax - got operator '$log_op' but no argument!");
                 }
 
                 // Now parse the subfilters into objects and combine them using the operator
                 $subfilters_o = array();
                 foreach ($subfilters as $s_s) {
                     $o = self::parse($s_s);
-                    if (PEAR::isError($o)) {
+                    if (MYPEAR::isError($o)) {
                         return $o;
                     } else {
                         array_push($subfilters_o, self::parse($s_s));
@@ -421,11 +421,11 @@ class Net_LDAP2_Filter extends PEAR
                 // detect multiple leaf components
                 // [TODO] Maybe this will make problems with filters containing brackets inside the value
                 if (stristr($matches[1], ')(')) {
-                    return PEAR::raiseError("Filter parsing error: invalid filter syntax - multiple leaf components detected!");
+                    return MYPEAR::raiseError("Filter parsing error: invalid filter syntax - multiple leaf components detected!");
                 } else {
                     $filter_parts = Net_LDAP2_Util::split_attribute_string($matches[1], true, true);
                     if (count($filter_parts) != 3) {
-                        return PEAR::raiseError("Filter parsing error: invalid filter syntax - unknown matching rule used");
+                        return MYPEAR::raiseError("Filter parsing error: invalid filter syntax - unknown matching rule used");
                     } else {
                         $filter_o          = new Net_LDAP2_Filter();
                         // [TODO]: Do we need to escape at all? what about *-chars user provide and that should remain special?
@@ -447,7 +447,7 @@ class Net_LDAP2_Filter extends PEAR
             }
         } else {
             // ERROR: Filter components must be enclosed in round brackets
-            return PEAR::raiseError("Filter parsing error: invalid filter syntax - filter components must be enclosed in round brackets");
+            return MYPEAR::raiseError("Filter parsing error: invalid filter syntax - filter components must be enclosed in round brackets");
         }
     }
 
@@ -500,23 +500,23 @@ class Net_LDAP2_Filter extends PEAR
     public function printMe($FH = false)
     {
         if (!is_resource($FH)) {
-            if (PEAR::isError($FH)) {
+            if (MYPEAR::isError($FH)) {
                 return $FH;
             }
             $filter_str = $this->asString();
-            if (PEAR::isError($filter_str)) {
+            if (MYPEAR::isError($filter_str)) {
                 return $filter_str;
             } else {
                 print($filter_str);
             }
         } else {
             $filter_str = $this->asString();
-            if (PEAR::isError($filter_str)) {
+            if (MYPEAR::isError($filter_str)) {
                 return $filter_str;
             } else {
                 $res = @fwrite($FH, $this->asString());
                 if ($res == false) {
-                    return PEAR::raiseError("Unable to write filter string to filehandle \$FH!");
+                    return MYPEAR::raiseError("Unable to write filter string to filehandle \$FH!");
                 }
             }
         }
@@ -631,7 +631,7 @@ class Net_LDAP2_Filter extends PEAR
                     // -------------------------------------
 
                     default:
-                        $err = PEAR::raiseError("Net_LDAP2_Filter match error: unsupported match rule '$match'!");
+                        $err = MYPEAR::raiseError("Net_LDAP2_Filter match error: unsupported match rule '$match'!");
                         return $err;
                 }
 
@@ -668,12 +668,12 @@ class Net_LDAP2_Filter extends PEAR
             $raw_filter = preg_replace('/^\(|\)$/', '', $this->_filter);
             $parts = Net_LDAP2_Util::split_attribute_string($raw_filter, true, true);
             if (count($parts) != 3) {
-                return PEAR::raiseError("Net_LDAP2_Filter getComponents() error: invalid filter syntax - unknown matching rule used");
+                return MYPEAR::raiseError("Net_LDAP2_Filter getComponents() error: invalid filter syntax - unknown matching rule used");
             } else {
                 return $parts;
             }
         } else {
-            return PEAR::raiseError('Net_LDAP2_Filter getComponents() call is invalid for non-leaf filters!');
+            return MYPEAR::raiseError('Net_LDAP2_Filter getComponents() call is invalid for non-leaf filters!');
         }
     }
 
