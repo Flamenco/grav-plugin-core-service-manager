@@ -1,3 +1,9 @@
+# v1.0.9
+##  05/06/2018
+
+1. [](#bugfix)
+    * Rename internal PEAR class to MYPEAR
+
 # v1.0.8
 ##  04/17/2018
 
