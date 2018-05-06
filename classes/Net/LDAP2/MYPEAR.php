@@ -2,7 +2,7 @@
 /**
  *MYPEAR, the PHP Extension and Application Repository
  *
- *MYPEAR class andMYPEAR_Error class
+ *MYPEAR class and MYPEAR_Error class
  *
  * PHP versions 4 and 5
  *
