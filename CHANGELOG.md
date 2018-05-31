@@ -1,3 +1,9 @@
+# v1.0.10
+##  05/31/2018
+
+1. [](#new)
+    * Merge templates with latest admin plugin
+
 # v1.0.9
 ##  05/06/2018
 
