@@ -64,9 +64,8 @@ class CoreServiceManagerPlugin extends Plugin
                 case 'js':
                 case 'javascript':
                     {
-                        if (isset($service['order'])) {
+                        if (isset($service['order']) && is_numeric($service['order'])) {
                             $a->addJs($service['url'], $service['order'], false);
-
                         } else {
                             $a->addJs($service['url']);
                         }
