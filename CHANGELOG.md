@@ -1,3 +1,9 @@
+# v1.0.12
+##  010/10/2018
+
+1. [](#bugfix)
+    * Ensure order is numeric when adding javascript asset
+
 # v1.0.11
 ##  010/10/2018
 
