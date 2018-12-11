@@ -34,13 +34,17 @@ define('MYPEAR_ERROR_EXCEPTION', 32);
 /**#@-*/
 
 if (substr(PHP_OS, 0, 3) == 'WIN') {
-    define('OS_WINDOWS', true);
-    define('OS_UNIX',    false);
-    define('MYPEAR_OS',    'Windows');
+    if (!defined('OS_WINDOWS') && !defined('OS_UNIX')) {
+        define('OS_WINDOWS', true);
+        define('OS_UNIX', false);
+    }
+    define('MYPEAR_OS', 'Windows');
 } else {
-    define('OS_WINDOWS', false);
-    define('OS_UNIX',    true);
-    define('MYPEAR_OS',    'Unix'); // blatant assumption
+    if (!defined('OS_WINDOWS') && !defined('OS_UNIX')) {
+        define('OS_WINDOWS', false);
+        define('OS_UNIX', true);
+    }
+    define('MYPEAR_OS', 'Unix'); // blatant assumption
 }
 
 $GLOBALS['_MYPEAR_default_error_mode']     = MYPEAR_ERROR_RETURN;
