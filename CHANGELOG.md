@@ -1,3 +1,9 @@
+# v1.0.18
+##  9/28/2019
+
+1. [](#improvement)
+    * Add icon support to dropdown menus
+    
 # v1.0.17
 ##  8/08/2019
 
