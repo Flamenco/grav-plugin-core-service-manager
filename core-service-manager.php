@@ -132,6 +132,11 @@ class CoreServiceManagerPlugin extends Plugin
             "type" => "js",
             "url" => 'plugin://core-service-manager/assets/ajax_action.js'
         ]);
+
+        ServiceManager::getInstance()->registerService("asset", [
+                    "type" => "css",
+                    "url" => 'plugin://core-service-manager/assets/core.css'
+        ]);
     }
 
     public function onAdminTwigTemplatePaths($event)
