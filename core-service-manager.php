@@ -151,13 +151,13 @@ class CoreServiceManagerPlugin extends Plugin
                 if (version_compare($version, '1.9.0') < 0) {
                     $event['paths'] = array_merge($event['paths'], [__DIR__ . '/admin/templates-grav-1_9']);
                 } else if (version_compare($version, '1.10.0') < 0) {
-                    $event['paths'] = array_merge($event['paths'], [__DIR__ . '/admin/templates-grav-1_10']);
+                    $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.6/admin-1.10']);
                 } else {
-                    $event['paths'] = array_merge($event['paths'], [__DIR__ . '/admin/templates-grav-latest']);
+                    $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.6/admin-latest']);
                 }
             }
         }
-        $event['paths'] = array_merge($event['paths'], [__DIR__ . '/admin/templates-twelvetone']);
+        $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/twelvetone']);
 
         return $event;
     }
