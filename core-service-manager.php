@@ -32,6 +32,7 @@ use Twelvetone\Common\ServiceManager;
 
 require_once "classes/ServiceManager.php";
 require_once 'classes/DependencyUtil.php';
+require_once 'classes/CoreServiceUtil.php';
 
 /**
  * Class CoreServiceManagerPlugin
@@ -39,12 +40,19 @@ require_once 'classes/DependencyUtil.php';
  */
 class CoreServiceManagerPlugin extends Plugin
 {
-    public static function getSubscribedEvents()
-    {
-        return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0],
-        ];
-    }
+	public function __construct($name, Grav $grav, Config $config = null)
+	{
+		parent::__construct($name, $grav, $config);
+		$util = new CoreServiceUtil($grav);
+		$grav['core-service-util'] = $util;
+	}
+
+	public static function getSubscribedEvents()
+	{
+		return [
+			'onPluginsInitialized' => ['onPluginsInitialized', 0],
+		];
+	}
 
 	public function onAssetsInitialized()
 	{
