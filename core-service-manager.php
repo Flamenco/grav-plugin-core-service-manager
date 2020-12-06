@@ -176,11 +176,12 @@ class CoreServiceManagerPlugin extends Plugin
 		$twig->addExtension(new ServiceTwigExtensions());
 	}
 
-    public function onAdminTaskExecute($e)
-    {
-        $method = $e['method'];
-        if (!Utils::startsWith("task", $method)) {
-            return false;
+	public function onAdminTaskExecute($e)
+	{
+
+		$method = $e['method'];
+		if (!Utils::startsWith($method, 'task')) {
+			return false;
 
 		}
 		$taskName = substr($method, 4);
