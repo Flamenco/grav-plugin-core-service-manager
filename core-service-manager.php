@@ -46,59 +46,59 @@ class CoreServiceManagerPlugin extends Plugin
         ];
     }
 
-    public function onAssetsInitialized()
-    {
-        $a = $this->grav['assets'];
+	public function onAssetsInitialized()
+	{
+		$a = $this->grav['assets'];
 
-        function addAsset($a, &$service)
-        {
-            if (!ServiceManager::getInstance()->isEnabled($service)) {
-                return;
-            }
+		function addAsset($a, &$service)
+		{
+			if (!ServiceManager::getInstance()->isEnabled($service)) {
+				return;
+			}
 
-            switch ($service['type']) {
-                case 'css':
-                    {
-                        $a->addCss($service['url']);
-                        break;
-                    }
-                case 'js':
-                case 'javascript':
-                    {
-                        if (isset($service['order']) && is_numeric($service['order'])) {
-                            $a->addJs($service['url'], $service['order'], false);
-                        } else {
-                            $a->addJs($service['url']);
-                        }
-                        break;
-                    }
-            }
-        }
+			switch ($service['type']) {
+				case 'css':
+				{
+					$a->addCss($service['url']);
+					break;
+				}
+				case 'js':
+				case 'javascript':
+				{
+					if (isset($service['order']) && is_numeric($service['order'])) {
+						$a->addJs($service['url'], $service['order'], false);
+					} else {
+						$a->addJs($service['url']);
+					}
+					break;
+				}
+			}
+		}
 
-        $manager = ServiceManager::getInstance();
+		$manager = ServiceManager::getInstance();
 
-        foreach ($manager->getServices("asset") as $service) {
-            addAsset($a, $service);
-        }
-        $manager->registerServiceListener('asset', function ($serviceInfo) use ($a) {
-            addAsset($a, $serviceInfo->implementation);
-        });
+		foreach ($manager->getServices("asset") as $service) {
+			addAsset($a, $service);
+		}
+		$manager->registerServiceListener('asset', function ($serviceInfo) use ($a) {
+			addAsset($a, $serviceInfo->implementation);
+		});
 
 
-        require_once "services/sample-services.php";
-        require_once "services/dependency-report.php";
-        //TODO not working (class not found issues)
-        //ServiceManager::getInstance()->requireServices(__DIR__ . "/services");
-    }
+		require_once "services/sample-services.php";
+		require_once "services/dependency-report.php";
+		//TODO not working (class not found issues)
+		//ServiceManager::getInstance()->requireServices(__DIR__ . "/services");
+	}
 
-    public function onPluginsInitialized()
-    {
-        if (!$this->isAdmin()) {
-            $this->enable([
-                'onAssetsInitialized' => ['onAssetsInitialized', 0],
-            ]);
-            return;
-        }
+	public function onPluginsInitialized()
+	{
+		if (!$this->isAdmin()) {
+			$this->enable([
+				'onAssetsInitialized' => ['onAssetsInitialized', 0],
+			]);
+			return;
+		}
 
         $this->enable([
             'onAssetsInitialized' => ['onAssetsInitialized', 0],
@@ -108,40 +108,40 @@ class CoreServiceManagerPlugin extends Plugin
             'onAdminTaskExecute' => ['onAdminTaskExecute', 0],
         ]);
 
-        ServiceManager::getInstance()->registerService("asset", [
-            "type" => "js",
-            "url" => 'plugin://core-service-manager/assets/modal.js'
-        ]);
+		ServiceManager::getInstance()->registerService("asset", [
+			"type" => "js",
+			"url" => 'plugin://core-service-manager/assets/modal.js'
+		]);
 
-        ServiceManager::getInstance()->registerService("asset", [
-            "type" => "css",
-            "url" => 'plugin://core-service-manager/assets/modal.css'
-        ]);
+		ServiceManager::getInstance()->registerService("asset", [
+			"type" => "css",
+			"url" => 'plugin://core-service-manager/assets/modal.css'
+		]);
 
-        ServiceManager::getInstance()->registerService("asset", [
-            "type" => "js",
-            "url" => 'plugin://core-service-manager/assets/ajax_action.js'
-        ]);
+		ServiceManager::getInstance()->registerService("asset", [
+			"type" => "js",
+			"url" => 'plugin://core-service-manager/assets/ajax_action.js'
+		]);
 
-        ServiceManager::getInstance()->registerService("asset", [
-            "type" => "js",
-            "url" => 'plugin://core-service-manager/assets/ajax.js'
-        ]);
+		ServiceManager::getInstance()->registerService("asset", [
+			"type" => "js",
+			"url" => 'plugin://core-service-manager/assets/ajax.js'
+		]);
 
-        ServiceManager::getInstance()->registerService("asset", [
-            "type" => "js",
-            "url" => 'plugin://core-service-manager/assets/ajax_action.js'
-        ]);
+		ServiceManager::getInstance()->registerService("asset", [
+			"type" => "js",
+			"url" => 'plugin://core-service-manager/assets/ajax_action.js'
+		]);
 
-        ServiceManager::getInstance()->registerService("asset", [
-                    "type" => "css",
-                    "url" => 'plugin://core-service-manager/assets/core.css'
-        ]);
-    }
+		ServiceManager::getInstance()->registerService("asset", [
+			"type" => "css",
+			"url" => 'plugin://core-service-manager/assets/core.css'
+		]);
+	}
 
-    public function onAdminTwigTemplatePaths($event)
-    {
-        $is_1_7 = version_compare(GRAV_VERSION, "1.7.0-beta.8", ">=");
+	public function onAdminTwigTemplatePaths($event)
+	{
+		$is_1_7 = version_compare(GRAV_VERSION, "1.7.0-beta.8", ">=");
 
         if ($this->config->get("plugins.core-service-manager.override_admin_twigs", true)) {
             $grav = Grav::instance();
@@ -165,16 +165,16 @@ class CoreServiceManagerPlugin extends Plugin
         }
         $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/twelvetone']);
 
-        return $event;
-    }
+		return $event;
+	}
 
     public function onTwigExtensions()
     {
         require_once(__DIR__ . '/twig/service-twig-extensions.php');
         $twig = $this->grav['twig']->twig;
 
-        $twig->addExtension(new ServiceTwigExtensions());
-    }
+		$twig->addExtension(new ServiceTwigExtensions());
+	}
 
     public function onAdminTaskExecute($e)
     {
@@ -182,54 +182,54 @@ class CoreServiceManagerPlugin extends Plugin
         if (!Utils::startsWith("task", $method)) {
             return false;
 
-        }
-        $taskName = substr($method, 4);
-        $taskName = mb_strtolower($taskName);
+		}
+		$taskName = substr($method, 4);
+		$taskName = mb_strtolower($taskName);
 
-        $found = array_find(function ($service) use ($taskName) {
-            return $service['name'] == $taskName;
-        }, ServiceManager::getInstance()->getServices('task'));
+		$found = array_find(function ($service) use ($taskName) {
+			return $service['name'] == $taskName;
+		}, ServiceManager::getInstance()->getServices('task'));
 
-        if (!$found) {
-            return false;
-        }
-        $found['execute']();
-        return true;
-    }
+		if (!$found) {
+			return false;
+		}
+		$found['execute']();
+		return true;
+	}
 
-    public function onPageNotFound($e)
-    {
-        $route = "/" . $this->grav['admin']->location . "/" . $this->grav['admin']->route;
+	public function onPageNotFound($e)
+	{
+		$route = "/" . $this->grav['admin']->location . "/" . $this->grav['admin']->route;
 
-        $pageServices = ServiceManager::getInstance()->getServices('page');
-        foreach ($pageServices as $pageService) {
-            if (!in_array("admin", $pageService['scope'])) {
-                continue;
-            }
-            //TODO escape tildes
-            if (preg_match('~' . $pageService['rxroute'] . '~', $route)) {
-                $page = $pageService['getPage']($route);
-                $e->page = $page;
-                $e->stopPropagation();
-                return true;
-            }
-        }
+		$pageServices = ServiceManager::getInstance()->getServices('page');
+		foreach ($pageServices as $pageService) {
+			if (!in_array("admin", $pageService['scope'])) {
+				continue;
+			}
+			//TODO escape tildes
+			if (preg_match('~' . $pageService['rxroute'] . '~', $route)) {
+				$page = $pageService['getPage']($route);
+				$e->page = $page;
+				$e->stopPropagation();
+				return true;
+			}
+		}
 
-        switch ($route) {
-            case "/core-service-manager/ajax_action":
-                $actionId = $_POST['actionId'];
-                $context = $_POST['context'];
-                ServiceManager::getInstance()->onAjaxAction($actionId, $context);
-                die('');
+		switch ($route) {
+			case "/core-service-manager/ajax_action":
+				$actionId = $_POST['actionId'];
+				$context = $_POST['context'];
+				ServiceManager::getInstance()->onAjaxAction($actionId, $context);
+				die('');
 
-            case "/core-service-manager/non_ajax_action":
-                $actionId = $_POST['actionId'];
-                $context = $_POST['context'];
-                ServiceManager::getInstance()->onNonAjaxAction($actionId, $context);
-                die('');
+			case "/core-service-manager/non_ajax_action":
+				$actionId = $_POST['actionId'];
+				$context = $_POST['context'];
+				ServiceManager::getInstance()->onNonAjaxAction($actionId, $context);
+				die('');
 
-            default:
-                return false;
-        }
-    }
+			default:
+				return false;
+		}
+	}
 }
