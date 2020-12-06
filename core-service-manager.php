@@ -25,9 +25,11 @@
 
 namespace Grav\Plugin;
 
+use Grav\Common\Config\Config;
 use Grav\Common\Grav;
 use Grav\Common\Plugin;
 use Grav\Common\Utils;
+use RocketTheme\Toolbox\Event\Event;
 use Twelvetone\Common\ServiceManager;
 
 require_once "classes/ServiceManager.php";
@@ -108,13 +110,19 @@ class CoreServiceManagerPlugin extends Plugin
 			return;
 		}
 
-        $this->enable([
-            'onAssetsInitialized' => ['onAssetsInitialized', 0],
-            'onAdminTwigTemplatePaths' => ['onAdminTwigTemplatePaths', 0],
-            'onTwigExtensions' => ['onTwigExtensions', 0],
-            'onPageNotFound' => ['onPageNotFound', 1],
-            'onAdminTaskExecute' => ['onAdminTaskExecute', 0],
-        ]);
+		$toEnable = [
+			'onAssetsInitialized' => ['onAssetsInitialized', 0],
+			'onAdminTwigTemplatePaths' => ['onAdminTwigTemplatePaths', 0],
+			'onTwigExtensions' => ['onTwigExtensions', 0],
+			'onPageNotFound' => ['onPageNotFound', 1],
+			'onAdminTaskExecute' => ['onAdminTaskExecute', 0],
+		];
+
+		if ($this->grav['core-service-util']->adminVersionIs('>=', '1.10')) {
+			$toEnable['flex.pages.admin.route'] = ['onAdminRoute', 0];
+			$toEnable['onAdminTaskExecute_Fix'] = ['onAdminTaskExecute', 0];
+		}
+		$this->enable($toEnable);
 
 		ServiceManager::getInstance()->registerService("asset", [
 			"type" => "js",
@@ -151,35 +159,57 @@ class CoreServiceManagerPlugin extends Plugin
 	{
 		$is_1_7 = version_compare(GRAV_VERSION, "1.7.0-beta.8", ">=");
 
-        if ($this->config->get("plugins.core-service-manager.override_admin_twigs", true)) {
-            $grav = Grav::instance();
-            $plugins = $grav['plugins'];
-            $plugin = $plugins->get('admin');
-            if ($plugin) {
-                $version = $plugin->blueprints()->version;
-                $admin_is_1_8 = version_compare($version, '1.10.0-beta.8') >= 0;
-                $version = preg_replace('/-beta.*$/', '', $version);
-                if ($is_1_7 && $admin_is_1_8) {
-                  $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.7/admin-latest']);
-                }
-                else if (version_compare($version, '1.9.0') < 0) {
-                    $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.6/admin-1.9']);
-                } else if (version_compare($version, '1.10.0') < 0) {
-                    $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.6/admin-1.10']);
-                } else {
-                    $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.6/admin-latest']);
-                }
-            }
-        }
-        $event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/twelvetone']);
+		if ($this->config->get("plugins.core-service-manager.override_admin_twigs", true)) {
+			$grav = Grav::instance();
+			$plugins = $grav['plugins'];
+			$plugin = $plugins->get('admin');
+			if ($plugin) {
+				$version = $plugin->blueprints()->version;
+				$admin_is_1_8 = version_compare($version, '1.10.0-beta.8') >= 0;
+				$version = preg_replace('/-beta.*$/', '', $version);
+				if ($is_1_7 && $admin_is_1_8) {
+					$event['paths'] = array_merge([__DIR__ . '/templates/grav-1.7/admin-latest'], $event['paths']);
+				} else if (version_compare($version, '1.9.0') < 0) {
+					$event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.6/admin-1.9']);
+				} else if (version_compare($version, '1.10.0') < 0) {
+					$event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.6/admin-1.10']);
+				} else {
+					$event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/grav-1.6/admin-latest']);
+				}
+			}
+		}
+		$event['paths'] = array_merge($event['paths'], [__DIR__ . '/templates/twelvetone']);
 
 		return $event;
 	}
 
-    public function onTwigExtensions()
-    {
-        require_once(__DIR__ . '/twig/service-twig-extensions.php');
-        $twig = $this->grav['twig']->twig;
+	public function onAdminRoute(Event $event): void
+	{
+		if ($this->grav['core-service-util']->adminVersionIs('<', '1.10')) {
+			return;
+		}
+		//WORKAROUND The FlexObjects plugin intercepts admin routes,
+		//so onAdminTaskExecute is never called for task posts.
+		if (!isset($_POST['task'])) {
+			return;
+		}
+
+		//TODO check nonce
+		//$nonce = $_POST['admin-nonce'];
+
+		$task = $_POST['task'];
+		$e = new Event([
+			'controller' => null, //TODO set controller
+			'method' => 'task' . $task,
+			'isWorkaround' => true,
+		]);
+		$this->grav->fireEvent('onAdminTaskExecute_Fix', $e);
+	}
+
+	public function onTwigExtensions()
+	{
+		require_once(__DIR__ . '/twig/service-twig-extensions.php');
+		$twig = $this->grav['twig']->twig;
 
 		$twig->addExtension(new ServiceTwigExtensions());
 	}
