@@ -22,6 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 namespace Grav\Plugin;
 
 use Grav\Common\Cache;
@@ -121,5 +122,33 @@ class CoreServiceUtil
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * @param Page $page
+	 * @return string A route that points the user to a page's admin edit page.
+	 */
+	public function routeToEdit(Page $page): string
+	{
+		$route = $page->route();
+		if ($route === '/') {
+			$route = $page->rawRoute();
+		}
+		return $this->routeToAdmin() . '/pages' . $route;
+	}
+
+	/**
+	 * @return string A route that points to the admin base page.
+	 */
+	public function routeToAdmin(): string
+	{
+		$route = '/admin';
+		$config = $this->grav['config'];
+		$adminRoute = $config->get('plugins.admin', false);
+		if ($adminRoute && isset($adminRoute['route'])) {
+			$route = $adminRoute['route'];
+		}
+		$base = isset($config->grav['base_url_relative']) ? $config->grav['base_url_relative'] : '';
+		return $base . $route;
 	}
 }
