@@ -1,17 +1,25 @@
+# v1.1.2
+##  12/7/2020
+
+1. [](#bugfix)
+    * Update license year
+    * Add functions for generating routes
+    * Update changelog sections
+   
 # v1.1.1
 ##  12/6/2020
 
-1. [](#bugfig)
+1. [](#bugfix)
     * Add missing function
    
 ##  12/6/2020
 
-1. [](#improvement)
+1. [](#improved)
     * Fix whitespace formatting
     * Add core-service-util
 2. [](#bugfix)
     * Fix startsWith() parameter order
-3. [](#improvement)
+3. [](#improved)
    * Add Grav v1.7 compatibility 
 
 
@@ -21,9 +29,9 @@
 
 1. [](#bugfix)
     * Update template for Grav 1.7 compatibility
-2. [](#improvement)
+2. [](#improved)
     * Refactor template directory layout
-3. [](#improvement)
+3. [](#improved)
     * Update CSS for sidebar button group
 4. [](#bugfix)
     * Fix finicky changelog format
@@ -33,15 +41,15 @@
 
 1. [](#bugfix)
     * Update template for Grav 1.7 compatibility
-2. [](#improvement)
+2. [](#improved)
     * Refactor template directory layout
-3. [](#improvement)
+3. [](#improved)
     * Update CSS for sidebar button group
     
 # v1.0.18
 ##  8/28/2019
 
-1. [](#improvement)
+1. [](#improved)
     * Add icon support to dropdown menus
     
 # v1.0.17
