@@ -1,3 +1,16 @@
+# v1.1.0
+##  12/6/2020
+
+1. [](#improvement)
+    * Fix whitespace formatting
+    * Add core-service-util
+2. [](#bugfix)
+    * Fix startsWith() parameter order
+3. [](#improvement)
+   * Add Grav v1.7 compatibility 
+
+
+    
 # v1.0.20
 ##  9/21/2019
 
