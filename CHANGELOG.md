@@ -1,4 +1,9 @@
-# v1.1.0
+# v1.1.1
+##  12/6/2020
+
+1. [](#bugfig)
+    * Add missing function
+   
 ##  12/6/2020
 
 1. [](#improvement)
