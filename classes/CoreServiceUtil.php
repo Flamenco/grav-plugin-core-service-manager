@@ -107,4 +107,20 @@ class CoreServiceUtil
 			return false;
 		}
 	}
+
+	/**
+	 * Search the array for an item an returns the first one found.
+	 * @param $array
+	 * @param $filter
+	 * @return mixed
+	 */
+	static public function array_find($filter, $array)
+	{
+		foreach ($array as $item) {
+			if ($filter($item)) {
+				return $item;
+			}
+		}
+		return null;
+	}
 }

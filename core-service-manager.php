@@ -216,7 +216,6 @@ class CoreServiceManagerPlugin extends Plugin
 
 	public function onAdminTaskExecute($e)
 	{
-
 		$method = $e['method'];
 		if (!Utils::startsWith($method, 'task')) {
 			return false;
@@ -225,7 +224,7 @@ class CoreServiceManagerPlugin extends Plugin
 		$taskName = substr($method, 4);
 		$taskName = mb_strtolower($taskName);
 
-		$found = array_find(function ($service) use ($taskName) {
+		$found = CoreServiceUtil::array_find(function ($service) use ($taskName) {
 			return $service['name'] == $taskName;
 		}, ServiceManager::getInstance()->getServices('task'));
 
