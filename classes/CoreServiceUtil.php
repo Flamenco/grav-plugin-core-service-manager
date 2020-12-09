@@ -138,7 +138,7 @@ class CoreServiceUtil
 	}
 
 	/**
-	 * @return string A route that points to the admin base page.
+	 * @return string An absolute route that points to the admin base page.
 	 */
 	public function routeToAdmin(): string
 	{
@@ -148,7 +148,9 @@ class CoreServiceUtil
 		if ($adminRoute && isset($adminRoute['route'])) {
 			$route = $adminRoute['route'];
 		}
-		$base = isset($config->grav['base_url_relative']) ? $config->grav['base_url_relative'] : '';
+
+//		$base = isset($config->grav['base_url_relative']) ? $config->grav['base_url_relative'] : '';
+		$base = rtrim($config->get('system.custom_base_url', ''), '/');
 		return $base . $route;
 	}
 }
