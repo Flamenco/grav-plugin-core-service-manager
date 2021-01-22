@@ -177,7 +177,7 @@ class ServiceTwigExtensions extends \Twig_Extension
                             // The admin sidebar needs the href set.
                             $href = "#";
                             if (isset($service['href'])) {
-                                $href = $service['href']
+                                $href = $service['href'];
                             }
 
                             $class = '';
