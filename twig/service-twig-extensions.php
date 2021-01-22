@@ -165,9 +165,11 @@ class ServiceTwigExtensions extends \Twig_Extension
                             $strContext = self::stringify($serverCallbackContext);
                             $handler .= "_nonAjaxAction(\"$serverCallbackId\", \"$strContext\", \"$confirmationMessage\");";
                         }
-                        $handler .= "return false;";
-
-                        $handler = "onclick='" . str_replace("'", "\\'", $handler) . "'";
+                        if ($handler !== ""){
+                            $handler .= "return false;";
+    
+                            $handler = "onclick='" . str_replace("'", "\\'", $handler) . "'";
+                        }
 //                        $handler = "onclick=\"" . str_replace("\"", "'", $handler) . "\"";
 
                         if ($scope && in_array("admin:sidebar", $scope)) {
