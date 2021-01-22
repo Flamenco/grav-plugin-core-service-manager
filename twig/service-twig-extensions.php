@@ -173,13 +173,18 @@ class ServiceTwigExtensions extends \Twig_Extension
                         if ($scope && in_array("admin:sidebar", $scope)) {
                             // The admin sidebar CSS only hides caption if it is inside an <em> tag.
                             // The admin sidebar needs the href set.
+                            $href = "#";
+                            if (isset($service['href'])) {
+                                $href = $service['href']
+                            }
+
                             $class = '';
                             if (isset($service['isSelected'])) {
                                 if ($service['isSelected']($context)) {
                                     $class = 'selected';
                                 }
                             }
-                            $out .= "<li class='$class'><a href='#' $handler><i class='fa fa-fw $icon'></i><em>$caption</em></i></a></li>";
+                            $out .= "<li class='$class'><a href='$href' $handler><i class='fa fa-fw $icon'></i><em>$caption</em></i></a></li>";
                         } else if ($scope && in_array("page:more", $scope)) {
                             // This is the format for the Admin titlebar button
                             $out .= "<li><a class='button' $handler><i class='fa $icon'></i>$caption</a></li>";
